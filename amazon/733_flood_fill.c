@@ -52,6 +52,24 @@ n == image[i].length
  * Note: Both returned array and *columnSizes array must be malloced, assume caller calls free().
  */
 
-int** floodFill(int** image, int imageSize, int* imageColSize, int sr, int sc, int color, int* returnSize, int** returnColumnSizes){
+void my_dfs(int** image, int imageSize, int* imageColSize, int sr, int sc, int newColor, int originalColor){
+    if(sr<0||sr>=imageSize||sc<0||sc>=(imageColSize[sr])|| image[sr][sc] != originalColor){
+        return;
+    }
+    image[sr][sc] = newColor;
+    my_dfs(image, imageSize, imageColSize, sr+1, sc, newColor, originalColor);
+    my_dfs(image, imageSize, imageColSize, sr, sc+1, newColor, originalColor);
+    my_dfs(image, imageSize, imageColSize, sr-1, sc, newColor, originalColor);
+    my_dfs(image, imageSize, imageColSize, sr, sc-1, newColor, originalColor);
+}
 
+int** floodFill(int** image, int imageSize, int* imageColSize, int sr, int sc, int color, int* returnSize, int** returnColumnSizes){
+    int** result = (int**)malloc(sizeof(int*)*imageSize);
+    *returnSize = imageSize;
+    *returnColumnSizes = imageColSize;
+    int pixel = image[sr][sc];
+    if(pixel != color){
+        my_dfs(image, imageSize, imageColSize, sr, sc , color, pixel);
+    }
+    return image;
 }
