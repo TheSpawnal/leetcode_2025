@@ -1,4 +1,10 @@
-
+#include <iostream>
+#include <vector>
+#include <string>
+#include <unordered_map>
+#include <queue>
+#include <utility> // for std::pair
+using namespace std; 
 class Solution {
 public:
     vector<string> topKFrequent(vector<string>& words, int k) {
