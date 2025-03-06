@@ -151,3 +151,4 @@ void kthLargestFree(KthLargest* obj) {
     // Free the KthLargest structure
     free(obj);
 }
+
