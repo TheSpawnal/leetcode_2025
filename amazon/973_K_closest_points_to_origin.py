@@ -3,7 +3,7 @@
 # return the k closest points to the origin (0, 0).
 
 # The distance between two points on the X-Y plane is the 
-# Euclidean distance (i.e., √(x1 - x2)2 + (y1 - y2)2).
+# Euclidean distance (i.e., √(x1 - x2)^2 + (y1 - y2)^2).
 # You may return the answer in any order. 
 # The answer is guaranteed to be unique (except for the order that it is in).
 
@@ -22,13 +22,13 @@
 
 class Solution:
     def kClosest(self, points: List[List[int]], k: int) -> List[List[int]]:
-        Heap = []
+        heap = []
         for (x, y) in points:
             dist = -(x*x + y*y)
             if len(heap) == k:
                 heapq.heappushpop(heap, (dist, x, y))
             else:
-                heapq.headpush(heap,(dist,x,y))
+                heapq.heappush(heap,(dist,x,y))
 
         return [(x,y) for (dist,x,y) in heap]
         
@@ -54,3 +54,51 @@ class Solution:
 #   to store the closest points. The result list also has a
 # maximum size of k. 
 # Therefore, the space complexity is proportional to the value of k.
+
+
+#extreme memory friendly alternative solution: 
+import math
+import heapq
+
+class Solution:
+    def chooseIndex(self, left: int, right: int) -> List[int]:
+        return left + (right - left) // 2
+
+    def getDistance(self, coords):
+        x, y = coords
+        return math.sqrt(x**2 + y**2)
+        
+    def kClosest(self, points: List[List[int]], k: int) -> List[List[int]]:
+        def partition(left, right):
+            pivot_i = self.chooseIndex(left, right)
+            pivot = self.getDistance(points[pivot_i])
+            swap_i = left
+
+            points[right], points[pivot_i] = points[pivot_i], points[right]
+
+            for i in range(left, right):
+                if self.getDistance(points[i]) < pivot:
+
+                    points[i], points[swap_i] = points[swap_i], points[i]
+                    swap_i+=1
+
+            points[right], points[swap_i] = points[swap_i], points[right]
+            return swap_i
+
+        left = 0
+        right = len(points) - 1
+
+
+        while left < right:
+            pivot_i = partition(left, right)
+
+            if pivot_i == k:
+                return points[:k]
+
+            if pivot_i < k:
+                left = pivot_i + 1
+            else:
+                right = pivot_i - 1
+
+
+        return points[:k]
