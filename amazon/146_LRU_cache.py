@@ -94,3 +94,30 @@ class LRUCache:
         node.next = self.tail
         self.tail.prev.next = node
         self.tail.prev = node
+
+#alternative: Using OrderedDict(SImpler)
+from collections import OrderedDict
+
+class LRUCache:
+    def __init__(self, capacity: int):
+        self.capacity = capacity
+        self.cache = OrderedDict()
+
+    def get(self, key: int)-> int:
+        if key self.cache:
+            #move to end(most recent)
+            self.cache.move_to_end(key)
+            return self.cache[key]
+        return -1
+    
+    def put(self, key: int, value:int)->None:
+        if key in self.cache:
+            #update and move to end
+            self.cache[key] = value
+            self.cache.move_to_end(key)
+        else:
+            self.cache[key] = value
+            if len(self.cache) > self.capacity:
+                #remove first item{LRU}
+                self.cache.popitem(last=False)
+    
