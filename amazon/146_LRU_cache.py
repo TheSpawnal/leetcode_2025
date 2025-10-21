@@ -120,4 +120,18 @@ class LRUCache:
             if len(self.cache) > self.capacity:
                 #remove first item{LRU}
                 self.cache.popitem(last=False)
-    
+
+# Complexity Analysis
+# Time Complexity: O(1) for both get and put
+
+# HashMap operations: O(1)
+# Linked list operations (add/remove/move): O(1)
+
+# Space Complexity: O(capacity)
+
+# HashMap stores at most capacity entries
+# Linked list has at most capacity nodes
+
+# The key insight is that the HashMap gives us fast access to nodes, 
+# while the linked list maintains the LRU ordering efficiently. 
+# The dummy head/tail nodes eliminate edge cases when the list is empty or has one element.
