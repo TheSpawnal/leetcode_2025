@@ -43,13 +43,13 @@ class Solution:
         max_size = len(s)
         window_size = max_size -1
 
-    while window_size > 1:
-        for i in range(max_size - window_size +1):
-            sub_str = s[i:window_size+i]
-    
-            if sub_str == sub_str[::-1]:
-                return sub_str
-        window_size -= 1
+        while window_size > 1:
+            for i in range(max_size - window_size +1):
+                sub_str = s[i:window_size+i]
+        
+                if sub_str == sub_str[::-1]:
+                    return sub_str
+            window_size -= 1
 
 return s[0]
 
