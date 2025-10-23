@@ -47,7 +47,7 @@ class Solution:
                 if sub_str == sub_str[::-1]:
                     return sub_str
             window_size -= 1
-return s[0]
+    return s[0]
 
 
         
