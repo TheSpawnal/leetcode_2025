@@ -61,7 +61,7 @@ class Solution:
 
 #alternative using collections.defaultdict
 
-from collections import deffaultdict
+from collections import defaultdict
 class Solution:
     def copyRandomList(self, head: 'Optional[Node]')->'Optional[Node]':
         if not head:
