@@ -79,4 +79,70 @@ class Solution:
             res.append(symbol * count)
             num -= count * value
 
-        return ''.join(res)                
+        return ''.join(res)     
+
+#alternative
+class Solution:
+    def intToRoman(self, num: int) -> str:
+        roman = {"I": 1, "V": 5, "X": 10, "L": 50, "C": 100, "D": 500, "M": 1000}
+        n = num
+        ans = ""
+        while n != 0:
+            if n >= 1000:
+                ans += "M"*(int(n/1000))
+                n = n%1000
+            
+            if n >= 900:
+                ans += "CM"*(int(n/900))
+                n = n%900
+
+            if n >= 500:
+                ans +="D"*int(n/500)
+                n = n%500
+            
+            if n >= 400:
+                ans += "CD"*(int(n/400))
+                n = n%400
+            
+            if n >= 100:
+                ans +="C"*(int(n/100))
+                n = n%100
+            
+            if n >= 90:
+                ans +="XC"*(int(n/90))
+                n = n%90
+
+            if n >= 50:
+                ans +="L"*(int(n/50))
+                n = n%50
+            
+            if n >= 40:
+                ans += "XL"*(int(n/40))
+                n = n%40
+            
+            if n >= 10:
+                ans += "X"*(int(n/10))
+                n = n%10
+            
+            if n >= 9:
+                ans += "IX"*(int(n/9))
+                n = n%9
+            
+            if n >= 5:
+                ans += "V"*(int(n/5))
+                n = n%5
+
+            if n >= 4:
+                ans += "IV"*(int(n/4))
+                n = n%4
+            
+            if n >= 1:
+                ans += "I"*(int(n/1))
+                n = n%1
+            
+        return ans
+                
+
+
+
+
