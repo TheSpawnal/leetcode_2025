@@ -57,22 +57,54 @@ At most 2 * 105 calls will be made to get and put.
 */
 
 
-
+//Strategy 1 , triple hashmap. + std::list per frequency bucket.
 class LFUCache {
+    int cap, minFreq;
+    unordered_map<int, pair<int,int>>          keyMap;   // key -> {val, freq}
+    unordered_map<int, list<int>>              freqMap;  // freq -> [key, key, ...] MRU front
+    unordered_map<int, list<int>::iterator>    iterMap;  // key -> its node in freqMap
+
+    void promote(int key) {
+        int f = keyMap[key].second;
+        freqMap[f].erase(iterMap[key]);
+        if (freqMap[f].empty()) {
+            freqMap.erase(f);
+            if (minFreq == f) ++minFreq;   // lazy minFreq advance
+        }
+        ++keyMap[key].second;
+        freqMap[f + 1].push_front(key);
+        iterMap[key] = freqMap[f + 1].begin();
+    }
+
 public:
-    LFUCache(int capacity) {
-        
-    }
-    
+    LFUCache(int capacity) : cap(capacity), minFreq(0) {}
+
     int get(int key) {
-        
+        if (!keyMap.count(key)) return -1;
+        promote(key);
+        return keyMap[key].first;
     }
-    
+
     void put(int key, int value) {
-        
+        if (!cap) return;
+        if (keyMap.count(key)) {
+            keyMap[key].first = value;
+            promote(key);
+            return;
+        }
+        if ((int)keyMap.size() == cap) {
+            int evict = freqMap[minFreq].back();  // LRU within min-freq bucket
+            freqMap[minFreq].pop_back();
+            if (freqMap[minFreq].empty()) freqMap.erase(minFreq);
+            iterMap.erase(evict);
+            keyMap.erase(evict);
+        }
+        keyMap[key] = {value, 1};
+        freqMap[1].push_front(key);
+        iterMap[key] = freqMap[1].begin();
+        minFreq = 1;
     }
 };
-
 /**
  * Your LFUCache object will be instantiated and called as such:
  * LFUCache* obj = new LFUCache(capacity);
