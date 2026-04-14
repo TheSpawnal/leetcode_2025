@@ -28,7 +28,6 @@ The number of nodes in the tree is n.
 The sum of all Node.val is n.
 
 */
-
 /**
  * Definition for a binary tree node.
  * function TreeNode(val, left, right) {
@@ -42,5 +41,19 @@ The sum of all Node.val is n.
  * @return {number}
  */
 var distributeCoins = function(root) {
-    
+    let moves = 0;
+
+    function dfs(node) {
+        if (!node) return 0;
+        let leftExcess = dfs(node.left);
+        let rightExcess = dfs(node.right);
+        moves += Math.abs(leftExcess) + Math.abs(rightExcess);
+        return node.val + leftExcess + rightExcess - 1;
+    }
+
+    dfs(root);
+    return moves;
 };
+
+// Time Complexity: O(n) where n is the number of nodes in the tree.
+// Space Complexity: O(h) where h is the height of the tree (due to recursion stack).
